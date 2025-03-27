@@ -99,9 +99,9 @@ COPY docker/99-realsense-libusb.rules /etc/udev/rules.d/
 
 # INCLUDE a compiled ready version of the current repo
 RUN mkdir -p /root/tb2_unizar_compiled_ws/src
-COPY tb2_unizar /root/tb2_unizar_compiled_ws/src/tb2_unizar
+ADD tb2_unizar /root/tb2_unizar_compiled_ws/src/tb2_unizar
 WORKDIR /root/tb2_unizar_compiled_ws
-RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+RUN ["/bin/bash", "-c", "source /root/optitrack_ws/install/setup.bash && colcon build --symlink-install"]
 
 RUN rm -rf log # remove log folder
 WORKDIR /root/
