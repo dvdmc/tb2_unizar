@@ -1,0 +1,33 @@
+<%
+# Input parameters
+tb_namespace           = @settings["tb_namespace"]
+simulation_config_file = @settings["simulation_config_file"]
+base_launch            = @settings["base_launch"] == "true"
+%>
+name: <%= tb_namespace %>
+attach: false
+root: ./
+startup_window: mission_monitoring
+windows:
+  # Platform
+  - platform:
+      layout: tiled
+      panes:
+      # Platform
+      <%- if base_launch %>
+        - ros2 launch tb2_unizar launch_simulation.py
+          use_sim_time:=true
+          simulation_config_file:=<%= simulation_config_file %>
+      <%- end %>
+        - ros2 launch tb2_unizar robot_description_unizar.launch.py use_sim_time:=false use_namespace:=false
+
+  # Mission monitoring
+  - mission_monitoring:
+      layout:
+      panes:
+        - echo Run here the mission
+
+  - navigation:
+      layout:
+      panes:
+        - ros2 launch nav2_bringup bringup_launch.py use_localization:=false use_namespace:=true use_composite:=false map:=maps/dummy.yaml params_file:=params/nav2_params.yaml
