@@ -25,6 +25,7 @@ RUN echo "set -g mouse on" > /root/.tmux.conf
 ## ROS2 Jazzy utils
 RUN apt-get install -y \
     python3-rosdep \
+    python3-setuptools \
     python3-pip \
     python3-colcon-common-extensions \
     python3-colcon-mixin \
@@ -40,7 +41,6 @@ RUN apt-get install -y \
 
 RUN apt-get install -y pylint flake8 pycodestyle
 RUN apt-get install cppcheck lcov -y
-RUN pip3 install setuptools==58.2.0 --break-system-packages
 
 # For allowing connection between machines, fastdds has some problem.
 RUN apt-get install ros-jazzy-rmw-cyclonedds-cpp -y
@@ -94,12 +94,12 @@ RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
 RUN echo "source /root/turtlebot2_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/optitrack_ws/install/setup.bash" >> /root/.bashrc
 
-COPY 60-kobuki.rules /etc/udev/rules.d/
-COPY 99-realsense-libusb.rules /etc/udev/rules.d/
+COPY docker/60-kobuki.rules /etc/udev/rules.d/
+COPY docker/99-realsense-libusb.rules /etc/udev/rules.d/
 
 # INCLUDE a compiled ready version of the current repo
 RUN mkdir -p /root/tb2_unizar_compiled_ws/src
-COPY ../tb2_unizar /root/tb2_unizar_compiled_ws/src/tb2_unizar
+COPY tb2_unizar /root/tb2_unizar_compiled_ws/src/tb2_unizar
 WORKDIR /root/tb2_unizar_compiled_ws
 RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 

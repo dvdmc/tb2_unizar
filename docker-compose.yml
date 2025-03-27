@@ -2,8 +2,8 @@ services:
   tb2_unizar:
     image: tb2_unizar
     build:
-      context: ./docker/
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: docker/Dockerfile
     container_name: tb2_unizar
     environment:
       DISPLAY: $DISPLAY
@@ -20,7 +20,7 @@ services:
       # 
       - /dev/:/dev
       
-      # By default, mount the current directory. Change to the line below for development
+      # By default, mount the current directory (Option 1 in README.md). Change to the line below for development (Option 2 in README.md)
       - ./tb2_unizar:/root/tb2_unizar_ws/src/tb2_unizar
       # - ./drones_unizar_dev_ws:/root/drones_unizar_dev_ws
     network_mode: "host"

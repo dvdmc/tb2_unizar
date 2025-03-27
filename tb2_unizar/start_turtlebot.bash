@@ -42,9 +42,9 @@ for namespace in ${tb2_namespaces[@]}; do
   if [[ ${namespace} == ${tb2_namespaces[0]} ]]; then
     base_launch="true"
   fi
-  eval "tmuxinator ${tmuxinator_mode} -n ${namespace} -p tmuxinator/launch_turtlebot_hokuyo.yaml \
+  eval "tmuxinator run -n ${namespace} -p tmuxinator/launch_turtlebot_hokuyo.yaml \
     tb_namespace=${namespace} \
-    ${tmuxinator_end}"
+    wait"
 
   sleep 0.1 # Wait for tmuxinator to finish
 done
