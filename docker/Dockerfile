@@ -64,12 +64,12 @@ RUN git clone https://github.com/kobuki-base/kobuki_ros_interfaces.git && \
 RUN usermod -a -G dialout root
 
 # URG Node for Hokuyo laser
-RUN git clone https://github.com/ros-drivers/urg_node
+RUN git clone --recursive https://github.com/Hokuyo-aut/urg_node2.git
 # By default connected to /dev/ttyACM0. 
 # In case of multiple Hokuyos, udev rules need to be created
 
 WORKDIR /root/turtlebot2_ws
-RUN rosdep install -i --from-path src --rosdistro jazzy -y
+RUN rosdep update && rosdep install -i --from-path src --rosdistro jazzy -y
 RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install --executor sequential
 
 # Install realsense

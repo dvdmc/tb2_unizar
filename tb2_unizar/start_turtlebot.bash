@@ -6,14 +6,14 @@ usage() {
 }
 
 # Initialize variables with default values
-tb_namespace_comma=""
+tb2_namespace_comma=""
 use_gnome="false"
 
 # Arg parser
 while getopts "n" opt; do
   case ${opt} in
     n )
-      tb_namespace_comma="${OPTARG}"
+      tb2_namespace_comma="${OPTARG}"
       ;;
     \? )
       echo "Invalid option: -$OPTARG" >&2
@@ -31,10 +31,10 @@ while getopts "n" opt; do
 done
 
 # If no drone namespaces are provided, use just tb2_unizar
-if [ -z "$drones_namespace_comma" ]; then
-  drones_namespace_comma="tb2_unizar"
+if [ -z "$tb2_namespace_comma" ]; then
+  tb2_namespace_comma="tb2_unizar"
 fi
-IFS=',' read -r -a tb2_namespaces <<< "$tb_namespace_comma"
+IFS=',' read -r -a tb2_namespaces <<< "$tb2_namespace_comma"
 
 # Launch tb2 for each drone namespace
 for namespace in ${tb2_namespaces[@]}; do
