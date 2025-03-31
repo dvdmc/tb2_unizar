@@ -96,10 +96,4 @@ def generate_launch_description():
         lifecycle_node,
         urg_node2_node_configure_event_handler,
         urg_node2_node_activate_event_handler,
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0.0', '0.0', '0.0', '0', '0', '0', 'laser', 'base_laser_link'],
-            output='screen',
-        ),
     ])
