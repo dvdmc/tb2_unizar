@@ -9,6 +9,7 @@ services:
       DISPLAY: $DISPLAY
       ROS_DOMAIN_ID: 3
       TURTLEBOT3_MODEL: wafffle
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
       GAZEBO_MODEL_PATH: /opt/ros/jazzy/share/turtlebot3_gazebo/models
 
     privileged: true
