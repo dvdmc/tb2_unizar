@@ -18,7 +18,7 @@ def generate_launch_description():
     # When starting a *composed* node on the other hand, only the dictionary
     # style is supported.  To keep the code between the non-composed and
     # composed launch file similar, we use that style here as well.
-    params_file = os.path.join(share_dir, 'config', 'kobuki_params.yaml')
+    params_file = os.path.join(share_dir, 'config', 'hokuyo', 'kobuki_params.yaml') #TODO: This only works for hokuyo since we have to disable tf_publish in optitrack.
     with open(params_file, 'r') as f:
         params = yaml.safe_load(f)['kobuki_ros_node']['ros__parameters']
 

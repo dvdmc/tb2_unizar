@@ -33,6 +33,7 @@ def generate_launch_description():
     config_file_path = os.path.join(
         get_package_share_directory('tb2_unizar'),
         'config',
+        'hokuyo',
         'hokuyo_config.yaml'
     )
 
