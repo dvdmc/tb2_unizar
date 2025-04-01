@@ -28,5 +28,5 @@ windows:
   - sensors:
       layout:
       panes:
-      - ros2 run tb2_unizar hokuyo.launch.py
+      - ros2 launch tb2_unizar hokuyo.launch.py
       - ros2 run realsense2_camera realsense2_camera_node
