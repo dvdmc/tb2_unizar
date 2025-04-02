@@ -7,6 +7,7 @@ This repository is intended to be an entry point to anyone working with [Turtleb
 - Hokuyo laser
 - Realsense camera
 - Nav2 stack with localization based on Hokuyo
+- Localization with Optitrack
 - Pending: Gazebo simulation
 
 It can be used as a template to create more complex projects. This repository can be used both at the robot and the ground station computers.
@@ -42,7 +43,7 @@ sudo docker exec -it tb2_unizar /bin/bash # To attach a terminal to the Docker.
 ```
 By default, there will be a workspace called `tb2_unizar_compiled_ws` with everything needed for the demos.
 
-You will need to do install the Docker in the robot computer for running all the software and the ground station where you want to run RViz and send the goals.
+You will need to install the Docker in the robot computer for running all the navigation software and on the ground station where you will run RViz and send the goals.
 
 ## Basic usage (demos)
 
@@ -60,8 +61,9 @@ cd src/tb2_unizar
 ```
 Finally, run the command:
 ```
-./start_turtlebot.bash
+./start_turtlebot.bash -m hokuyo
 ```
+This will start everything needed for navigating in the I3A laboratory with Nav2 on a TB2 with a Hokuyo laser sensor on the top connected with USB.
 
 For visualization, on another computer. You just need to run the RViz visualization:
 ```
@@ -78,6 +80,21 @@ The previous version is an already compiled and ready to use system that directl
 
 With this option you just mount the current repository with the `tb2_unizar` package inside `/root/tb2_unizar_ws/src/tb2_unizar`. The instructions are in the `docker-compose.yml` file. This won't persist your builds and only allows to modify the files in the current repository.
 
-### 2. Mount your own workspace
+### 2. Mount your own workspace (recommended)
 
 Execute the `create_workspace.bash` script to create a workspace folder in the current directory. You can `git clone` any ROS 2 packages in the `src` folder and mount the `tb2_unizar` package in the `src/tb2_unizar` (see instructions in the `docker-compose.yml`). The advantage of this option is that you can edit anything in your workspace with VSCode. Additionally, the `build`, `install`, and `log` folders will be persisted across Docker executions.
+
+### Configure your own TB2
+
+The entrypoint should be `start_turtlebot.bash`, which will start a `tmux` session following the description of a `tmuxinator` template. Check these files to understand the required modules to run.
+
+## TB2 Unizar package structure
+
+The `tb2_unizar` package included in this repository is structured as follows:
+
+- `config`: config files for the different execution modes. They will generally be loaded by `tmuxinator` files and `launch` files.
+- `include` / `src`: code for required nodes. This package only contains specific nodes that we need.
+- `launch`: our own launch files. We try to use standalone launch files when possible (nav2 bringup and mocap4ros2) but we need to make slight changes to others (hokuyo and kobuki).
+- `maps`: our saved maps.
+- `meshes`/`urdf`: a backup of the URDFs and meshes from the `turtlebot_description` ROS (1) package that include specific files for the Turtlebot 2.
+- `tmuxinator`: templates for orchestrated system launch. They are called from the `start_turtlebot.bash` script.
