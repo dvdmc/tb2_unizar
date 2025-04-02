@@ -18,21 +18,21 @@ windows:
       layout:
       panes:
         - ros2 launch tb2_unizar kobuki_node_optitrack.launch.py
-        - ros2 launch tb2_unizar robot_description_unizar.launch.py urdf_file:=urdf/turtlebot_unizar_optitrack.urdf.xacro use_sim_time:=false use_namespace:=false
+        - ros2 launch tb2_unizar kobuki_description_unizar.launch.py urdf_file:=urdf/turtlebot_unizar_optitrack.urdf.xacro use_sim_time:=false use_namespace:=false
   - navigation:
       layout:
       panes:
-        - ros2 launch nav2_bringup bringup_launch.py use_localization:=False use_namespace:=False use_composite:=False map:=maps/dummy.yaml params_file:=params/optitrack/nav2_params.yaml
-  
+        - ros2 launch nav2_bringup bringup_launch.py use_localization:=False use_namespace:=False use_composite:=False map:=maps/dummy.yaml params_file:=config/optitrack/nav2_params.yaml
+        # Map server is not run when not using localization:
+        - ros2 launch tb2_unizar nav2_map_server.launch.py map:=maps/dummy.yaml use_sim_time:=false use_namespace:=false params_file:=config/optitrack/nav2_params.yaml
   # Pose
   - pose:
-      <%- if mocap4ros2 %> # This should ideally be in the ground station for multi-robot setups.
-        - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py
-            namespace:=mocap
-            config_file:=config/optitrack/mocap4r2_optitrack.yaml
+      layout:
+      panes:
+      # This should ideally be in the ground station for multi-robot setups.
+        - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py namespace:=mocap config_file:=config/optitrack/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
         - sleep 2; ros2 run tb2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies
-      <%- end %>
   - static_transforms:
       layout:
       panes:

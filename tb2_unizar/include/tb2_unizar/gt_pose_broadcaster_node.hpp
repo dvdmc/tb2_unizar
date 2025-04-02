@@ -142,7 +142,7 @@
                        std::placeholders::_1));
  
      pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>(
-         "pose", rclcpp::QoS(1));
+         "gt_pose", rclcpp::QoS(1));
  
      geometry_msgs::msg::TransformStamped map_to_odom;
      map_to_odom.transform = tf2::toMsg(map_to_odom_);

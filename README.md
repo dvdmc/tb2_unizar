@@ -38,7 +38,7 @@ We provide a Dockerfile to run the system within Docker. This allows for easy in
 
 ```bash
 xhost + # To allow the Docker use the host graphical interface
-sudo docker compose up -d # To run the docker-compose.yml and keep it running in the background. It will compile the container the first time you run it.
+sudo docker compose up -d # To run the docker-compose.yml and keep it running in the background. It will compile the container the first time you run it (~20min on Intel NUC).
 sudo docker exec -it tb2_unizar /bin/bash # To attach a terminal to the Docker.
 ```
 By default, there will be a workspace called `tb2_unizar_compiled_ws` with everything needed for the demos.
@@ -98,3 +98,20 @@ The `tb2_unizar` package included in this repository is structured as follows:
 - `maps`: our saved maps.
 - `meshes`/`urdf`: a backup of the URDFs and meshes from the `turtlebot_description` ROS (1) package that include specific files for the Turtlebot 2.
 - `tmuxinator`: templates for orchestrated system launch. They are called from the `start_turtlebot.bash` script.
+
+## Steps for Hokuyo / Realsense run
+
+Explain config sensors and preliminary checks. Map recording and navigation.
+
+- Configure correctly the `scan` topic on the `Hokuyo` and `Nav2` config files.
+
+## Steps for Optitrack
+
+Configure the Optitrack computer IP and the robot local IP on `config/optitrack/mocap4r2_optitrack.yaml`.
+
+### Specific params
+
+- The Kobuki node `publish_tf` is set to false because the `gt_pose_broadcaster` node will publish this transform.
+- The Nav2 map is a dummy one (TODO: Check if this is still required), and `use_localization` is set to false.
+- The ground truth TF for odometry is `odom`, but the odometry topic is `gt_pose`.
+- Deactivated the `scan` observations in the `collision_monitor`. Otherwise, there will be no `cmd_vel`message.

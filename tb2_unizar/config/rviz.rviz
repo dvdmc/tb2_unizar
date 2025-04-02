@@ -7,9 +7,8 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
-        - /Map1/Status1
       Splitter Ratio: 0.5
-    Tree Height: 1475
+    Tree Height: 619
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -27,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Hokuyo
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -106,48 +105,10 @@ Visualization Manager:
         All Enabled: false
         base_footprint:
           Value: false
-        base_gimbal_link:
-          Value: false
-        base_gimbal_plate_link:
-          Value: false
-        base_laser_link:
-          Value: true
-        base_laser_plate_link:
-          Value: false
         base_link:
           Value: true
-        camera_accel_frame:
-          Value: false
-        camera_accel_optical_frame:
-          Value: false
-        camera_aligned_depth_to_infra1_frame:
-          Value: false
-        camera_bottom_screw_frame:
-          Value: false
-        camera_color_frame:
-          Value: false
-        camera_color_optical_frame:
-          Value: false
-        camera_depth_frame:
-          Value: false
-        camera_depth_optical_frame:
-          Value: false
-        camera_gyro_frame:
-          Value: false
-        camera_gyro_optical_frame:
-          Value: false
-        camera_infra1_frame:
-          Value: false
-        camera_infra1_optical_frame:
-          Value: false
-        camera_infra2_frame:
-          Value: false
-        camera_infra2_optical_frame:
-          Value: false
-        camera_link:
-          Value: false
-        camera_mount_gimbal_link:
-          Value: false
+        base_mocap:
+          Value: true
         caster_back_link:
           Value: false
         caster_front_link:
@@ -233,34 +194,8 @@ Visualization Manager:
                 plate_middle_link:
                   {}
                 plate_top_link:
-                  base_gimbal_plate_link:
-                    base_gimbal_link:
-                      camera_mount_gimbal_link:
-                        camera_bottom_screw_frame:
-                          camera_link:
-                            camera_accel_frame:
-                              camera_accel_optical_frame:
-                                {}
-                            camera_aligned_depth_to_infra1_frame:
-                              camera_infra1_optical_frame:
-                                {}
-                            camera_color_frame:
-                              camera_color_optical_frame:
-                                {}
-                            camera_depth_frame:
-                              camera_depth_optical_frame:
-                                {}
-                            camera_gyro_frame:
-                              camera_gyro_optical_frame:
-                                {}
-                            camera_infra1_frame:
-                              {}
-                            camera_infra2_frame:
-                              camera_infra2_optical_frame:
-                                {}
-                  base_laser_plate_link:
-                    base_laser_link:
-                      {}
+                  base_mocap:
+                    {}
                 pole_bottom_0_link:
                   {}
                 pole_bottom_1_link:
@@ -334,43 +269,20 @@ Visualization Manager:
       Color Scheme: map
       Draw Behind: false
       Enabled: true
-      Name: Map
+      Name: GlobalStaticLayer
       Topic:
         Depth: 5
         Durability Policy: Volatile
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /map
+        Value: /global_costmap/static_layer
       Update Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /map_updates
-      Use Timestamp: false
-      Value: true
-    - Alpha: 0.699999988079071
-      Binary representation: false
-      Binary threshold: 100
-      Class: rviz_default_plugins/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: true
-      Name: GlobalObstLayer
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /global_costmap/obstacle_layer
-      Update Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /global_costmap/obstacle_layer_updates
+        Value: /global_costmap/static_layer_updates
       Use Timestamp: false
       Value: true
     - Alpha: 0.699999988079071
@@ -419,19 +331,6 @@ Visualization Manager:
         Value: /local_costmap/costmap_updates
       Use Timestamp: false
       Value: true
-    - Alpha: 1
-      Class: rviz_default_plugins/Polygon
-      Color: 25; 255; 0
-      Enabled: true
-      Name: LocalFootprint
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /local_costmap/published_footprint
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -478,33 +377,33 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 6.887343406677246
+      Distance: 11.227743148803711
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.4753741919994354
-        Y: -0.26102015376091003
-        Z: -1.7476764917373657
+        X: 2.8637635707855225
+        Y: 0.443760484457016
+        Z: -1.7668144702911377
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3903977870941162
+      Pitch: 0.6753983497619629
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.110400438308716
+      Yaw: 3.880411148071289
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 2752
+  Height: 1371
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000403000009d1fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b000000ab00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000069000006b10000017800fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000716000003240000000000000000fb00000012005200650061006c00730065006e007300650100000726000003140000002100ffffff000000010000014d000009d1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730100000069000009d10000012300fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000137000000051fc0100000002fb0000000800540069006d00650100000000000013700000046000fffffffb0000000800540069006d0065010000000000000450000000000000000000000e08000009d100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000017d000004aefc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b00000330000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000716000003240000000000000000fb00000012005200650061006c00730065006e007300650100000371000001780000001600ffffff000000010000014d000004aefc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b000004ae000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009be00000051fc0100000002fb0000000800540069006d00650100000000000009be0000025300fffffffb0000000800540069006d00650100000000000004500000000000000000000006e8000004ae00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Realsense:
     collapsed: false
   Selection:
@@ -515,6 +414,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 4976
-  X: 3216
-  Y: 54
+  Width: 2494
+  X: 66
+  Y: 32
