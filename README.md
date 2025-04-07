@@ -32,9 +32,9 @@ for using the serial connections to the Kobuki, and Hokuyo laser.
 
 Now you can directly proceed to the following Docker installation steps.
 
-### Docker installation
+### Docker installation & running
 
-We provide a Dockerfile to run the system within Docker. This allows for easy install of all the dependencies. Also, this Dockerfile works as a reference of anything that should be done in a host machine in order to have the system ready. You can install and run the Docker with:
+We provide a Dockerfile to run the system within Docker. This allows for easy installation of all the dependencies. Also, this Dockerfile works as a reference for anything that should be done in a host machine in order to have the system ready. You can install and **run (entrypoint for demos)** the Docker with:
 
 ```bash
 xhost + # To allow the Docker use the host graphical interface

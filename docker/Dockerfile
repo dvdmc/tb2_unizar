@@ -18,8 +18,9 @@ RUN apt-get install -y  git \
     net-tools \
     build-essential \
     cmake \
-    lsb-release
-
+    lsb-release \
+    iputils-ping 
+    
 RUN echo "set -g mouse on" > /root/.tmux.conf
 
 ## ROS2 Jazzy utils
