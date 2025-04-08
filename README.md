@@ -47,17 +47,13 @@ You will need to install the Docker in the robot computer for running all the na
 
 ## Basic usage (demos)
 
-Once you are in the Docker, you can run:
+Once you are in the Docker, you can source the workspace in the terminal:
 ```
-cd tb2_unizar_compiled_ws
-```
-And then you can source the workspace in the terminal:
-```
-source install/setup.bash
+source tb2_unizar_compiled_ws/install/setup.bash
 ```
 Move to the `tb2_unizar` package:
 ```
-cd src/tb2_unizar
+cd tb2_unizar_compiled_ws/src/tb2_unizar
 ```
 Finally, run the command:
 ```
@@ -65,11 +61,19 @@ Finally, run the command:
 ```
 This will start everything needed for navigating in the I3A laboratory with Nav2 on a TB2 with a Hokuyo laser sensor on the top connected with USB.
 
-For visualization, on another computer. You just need to run the RViz visualization:
+For visualization, on another computer, you can run docker and attach a terminal. Then, you just need to run the RViz visualization:
 ```
-cd tb2_unizar_compiled_ws
-source install/setup.bash
-ros2 run rviz2 rviz2 -d config/rviz.rviz
+source tb2_unizar_compiled_ws/install/setup.bash
+ros2 run rviz2 rviz2 -d tb2_unizar_compiled_ws/src/tb2_unizar/config/rviz.rviz
+```
+
+To stop everything:
+- On the robot, run `./stop_turtlebot.bash` in any of the open terminals.
+- On the ground station, just do Ctrl+c to stop the RViz visualization.
+- On both computers, run:
+```bash
+exit
+sudo docker compose down
 ```
 
 ## Usage development
