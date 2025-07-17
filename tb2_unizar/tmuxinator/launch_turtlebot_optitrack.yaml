@@ -32,6 +32,7 @@ windows:
       # This should ideally be in the ground station for multi-robot setups.
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py namespace:=mocap config_file:=config/optitrack/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
+        # The mocap4r2_optitrack_driver will publish 
         - sleep 2; ros2 run tb2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies
   - static_transforms:
       layout:

@@ -1,0 +1,20 @@
+<%
+# Input parameters
+tb_namespace           = @settings["tb_namespace"]
+%>
+name: <%= tb_namespace %>
+attach: false
+root: ./
+startup_window: mission_monitoring
+windows:
+  # Twist teleop
+  - mission_monitoring:
+      layout:
+      panes:
+        - ros2 launch tb2_unizar twist_teleop.launch.py
+
+  # RViz
+  - rviz:
+      layout:
+      panes:
+        - ros2 run rviz2 rviz2 -d /config/rviz.rviz

@@ -1,0 +1,26 @@
+<%
+# Input parameters
+tb_namespace           = @settings["tb_namespace"]
+%>
+name: <%= tb_namespace %>
+attach: false
+root: ./
+startup_window: mission_monitoring
+windows:
+  # Mission monitoring
+  - mission_monitoring:
+      layout:
+      panes:
+        - echo Run here the mission
+
+  # Kobuki
+  - kobuki:
+      layout:
+      panes:
+        - ros2 launch tb2_unizar kobuki_node.launch.py
+  
+  # Sensors
+  - sensors:
+      layout:
+      panes:
+      - ros2 run realsense2_camera realsense2_camera_node

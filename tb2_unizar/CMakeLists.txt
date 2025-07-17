@@ -18,10 +18,10 @@ set(PROJECT_DEPENDENCIES
   rclcpp
   rclcpp_components
   nav_msgs
-  geometry_msgs
   tf2
   tf2_ros
   tf2_geometry_msgs
+  geometry_msgs
   mocap4r2_msgs
 )
 foreach(DEPENDENCY ${PROJECT_DEPENDENCIES})
@@ -44,10 +44,10 @@ ament_target_dependencies(gt_pose_broadcaster
   rclcpp
   rclcpp_components
   nav_msgs
-  geometry_msgs
   tf2
   tf2_ros
   tf2_geometry_msgs
+  geometry_msgs
   mocap4r2_msgs
   )
 

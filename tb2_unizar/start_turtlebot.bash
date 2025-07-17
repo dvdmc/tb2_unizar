@@ -17,7 +17,7 @@ while getopts "n:m:" opt; do
       tb2_namespace_comma="${OPTARG}"
       ;;
     m )
-      if [[ "${OPTARG}" =~ ^(hokuyo|optitrack|gazebo)$ ]]; then
+      if [[ "${OPTARG}" =~ ^(hokuyo|optitrack|gazebo|teleop)$ ]]; then
         mode="${OPTARG}"
       else
         echo "Invalid mode: ${OPTARG}. Valid options are: hokuyo, optitrack, gazebo" >&2
