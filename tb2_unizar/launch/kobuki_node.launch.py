@@ -1,36 +1,67 @@
-#NOTE: This file is directly copied from: https://github.com/kobuki-base/kobuki_ros/blob/devel/kobuki_node/launch/kobuki_node-launch.py
-# and the remappings were added
-import os
-
-import ament_index_python
-import launch
-import launch_ros.actions
-import launch_ros.substitutions
-
-import yaml
+# Launch file for Kobuki node with namespace support
+from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
-    share_dir = ament_index_python.packages.get_package_share_directory('tb2_unizar')
-    # There are two different ways to pass parameters to a non-composed node;
-    # either by specifying the path to the file containing the parameters, or by
-    # passing a dictionary containing the key -> value pairs of the parameters.
-    # When starting a *composed* node on the other hand, only the dictionary
-    # style is supported.  To keep the code between the non-composed and
-    # composed launch file similar, we use that style here as well.
-    params_file = os.path.join(share_dir, 'config', 'hokuyo', 'kobuki_params.yaml') #TODO: This only works for hokuyo since we have to disable tf_publish in optitrack.
-    with open(params_file, 'r') as f:
-        params = yaml.safe_load(f)['kobuki_ros_node']['ros__parameters']
+    # Get the launch directory
+    tb2_unizar_dir = get_package_share_directory('tb2_unizar')
 
-    remappings = [
-        ('commands/velocity', 'cmd_vel'),
-    ]
-    # Add log level to params
-    params['log_level'] = 'debug'
-    kobuki_ros_node = launch_ros.actions.Node(package='kobuki_node',
-                                              executable='kobuki_ros_node',
-                                              output='both',
-                                              parameters=[params],
-                                              remappings=remappings)
+    # Create the launch configuration variables
+    namespace = LaunchConfiguration('namespace')
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    params_file = LaunchConfiguration('params_file')
+    
+    # Define remappings
+    remappings = [('commands/velocity', 'cmd_vel'), ('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
-    return launch.LaunchDescription([kobuki_ros_node])
+    # Create launch configuration arguments
+    declare_namespace_cmd = DeclareLaunchArgument(
+        'namespace',
+        default_value='',
+        description='Top-level namespace'
+    )
+    
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        description='Use simulation (Gazebo) clock if true'
+    )
+
+    declare_params_file_cmd = DeclareLaunchArgument(
+        'params_file',
+        default_value=PathJoinSubstitution([tb2_unizar_dir, 'config', 'optitrack', 'kobuki_params.yaml']),
+        description='Path to the YAML file with parameters for the Kobuki node'
+    )
+
+
+    configured_params = RewrittenYaml(
+        source_file=params_file,
+        root_key='',
+        param_rewrites={
+            'use_sim_time': use_sim_time
+        },
+        convert_types=True
+    )
+
+
+    # Create the Kobuki node
+    kobuki_node = Node(
+        package='kobuki_node',
+        executable='kobuki_ros_node',
+        namespace=namespace,
+        output='screen',
+        parameters=[configured_params],
+        remappings=remappings
+    )
+
+    return LaunchDescription([
+        declare_namespace_cmd,
+        declare_use_sim_time_cmd,
+        declare_params_file_cmd,
+        kobuki_node
+    ])

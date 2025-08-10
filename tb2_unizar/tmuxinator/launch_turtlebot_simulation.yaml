@@ -2,7 +2,6 @@
 # Input parameters
 tb_namespace           = @settings["tb_namespace"]
 simulation_config_file = @settings["simulation_config_file"]
-base_launch            = @settings["base_launch"] == "true"
 %>
 name: <%= tb_namespace %>
 attach: false
@@ -14,12 +13,11 @@ windows:
       layout: tiled
       panes:
       # Platform
-      <%- if base_launch %>
-        - ros2 launch tb2_unizar launch_simulation.py
-          use_sim_time:=true
-          simulation_config_file:=<%= simulation_config_file %>
-      <%- end %>
-        - ros2 launch tb2_unizar robot_description_unizar.launch.py use_sim_time:=false use_namespace:=false
+        # TODO: Move somewhere else!
+        # - ros2 launch tb2_unizar launch_simulation.py
+        #   use_sim_time:=true
+        #   simulation_config_file:=<%= simulation_config_file %>
+        - ros2 launch tb2_unizar kobuki_description_unizar.launch.py urdf_file:=urdf/turtlebot_unizar_hokuyo_top.urdf.xacro use_sim_time:=True namespace:=<%= tb_namespace %>
 
   # Mission monitoring
   - mission_monitoring:
@@ -30,4 +28,4 @@ windows:
   - navigation:
       layout:
       panes:
-        - ros2 launch nav2_bringup bringup_launch.py use_localization:=false use_namespace:=true use_composite:=false map:=maps/dummy.yaml params_file:=params/nav2_params.yaml
+        - sleep 3 && ros2 launch nav2_bringup bringup_launch.py use_localization:=True use_sim_time:=True  namespace:=<%= tb_namespace %> use_composite:=False map:=maps/i3aApril2025.yaml params_file:=config/hokuyo/nav2_params.yaml

@@ -228,7 +228,7 @@ local_costmap:
           #   * User chosen topic is `scan`.
           #   * Topic will be remapped to `/tb4/scan` without `local_costmap`.
           #   * Use global topic `/scan` if you do not wish the node namespace to apply
-          topic: /scan
+          topic: scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True

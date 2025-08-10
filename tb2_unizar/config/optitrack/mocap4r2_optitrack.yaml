@@ -1,7 +1,7 @@
 /**:
   mocap4r2_optitrack_driver_node:
     ros__parameters:
-      connection_type: "Unicast" # Unicast / Multicast
+      connection_type: "Multicast" # Unicast / Multicast
       server_address: "192.168.0.100"
       local_address: "192.168.0.141"
       multicast_address: "239.255.42.99"

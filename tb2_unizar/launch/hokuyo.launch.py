@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import launch
-import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.conditions import IfCondition
@@ -26,10 +23,30 @@ from launch_ros.actions import LifecycleNode
 from launch_ros.event_handlers import OnStateTransition
 from launch_ros.events.lifecycle import ChangeState
 from lifecycle_msgs.msg import Transition
+import os
+import yaml
 
 def generate_launch_description():
+    # Declare launch arguments
+    declare_namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="",
+        description="Namespace for the robot"
+    )
 
-    # パラメータファイルのパス設定
+    declare_auto_start_cmd = DeclareLaunchArgument(
+        'auto_start',
+        default_value='true',
+        description='Automatically start the lifecycle node'
+    )
+
+    declare_node_name_cmd = DeclareLaunchArgument(
+        'node_name',
+        default_value='urg_node2',
+        description='Name for the URG node'
+    )
+
+    # Load parameters from config file
     config_file_path = os.path.join(
         get_package_share_directory('tb2_unizar'),
         'config',
@@ -37,19 +54,17 @@ def generate_launch_description():
         'hokuyo_config.yaml'
     )
 
-    # パラメータファイルのロード
     with open(config_file_path, 'r') as file:
         config_params = yaml.safe_load(file)['urg_node2']['ros__parameters']
 
-    # urg_node2をライフサイクルノードとして起動
+    # Create the URG lifecycle node
     lifecycle_node = LifecycleNode(
         package='urg_node2',
         executable='urg_node2_node',
         name=LaunchConfiguration('node_name'),
-        remappings=[('scan', LaunchConfiguration('scan_topic_name'))],
+        namespace=LaunchConfiguration('namespace'),
         parameters=[config_params],
-        namespace='',
-        output='screen',
+        output='screen'
     )
 
     # Unconfigure状態からInactive状態への遷移（auto_startがtrueのとき実施）
@@ -91,9 +106,9 @@ def generate_launch_description():
     # node_name       : ノード名 (default)"urg_node2"
     # scan_topic_name : トピック名 (default)"scan" *マルチエコー非対応*
     return LaunchDescription([
-        DeclareLaunchArgument('auto_start', default_value='True'),
-        DeclareLaunchArgument('node_name', default_value='urg_node2'),
-        DeclareLaunchArgument('scan_topic_name', default_value='scan'),
+        declare_namespace_cmd,
+        declare_auto_start_cmd,
+        declare_node_name_cmd,
         lifecycle_node,
         urg_node2_node_configure_event_handler,
         urg_node2_node_activate_event_handler,

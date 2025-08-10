@@ -1,12 +1,11 @@
 FROM osrf/ros:jazzy-desktop-full
 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y  git \
+RUN apt-get update && apt-get upgrade -y \
+  && apt-get install -y \
     tmux \
     tmuxinator \
     vim \
     xterm \
-    curl \
     ssh \
     tree \
     python3-tk \
@@ -16,38 +15,42 @@ RUN apt-get install -y  git \
     htop \
     gdb \
     net-tools \
-    build-essential \
     cmake \
     lsb-release \
-    iputils-ping 
-    
+    iputils-ping
+
 RUN echo "set -g mouse on" > /root/.tmux.conf
 
-## ROS2 Jazzy utils
+# ROS2 Jazzy utils
 RUN apt-get install -y \
-    python3-rosdep \
     python3-setuptools \
     python3-pip \
-    python3-colcon-common-extensions \
-    python3-colcon-mixin \
     ros-dev-tools
 
-RUN apt-get install -y \
-    python3-flake8 \
-    python3-flake8-builtins \
-    python3-flake8-comprehensions \
-    python3-flake8-docstrings \
-    python3-flake8-import-order \
-    python3-flake8-quotes
 
-RUN apt-get install -y pylint flake8 pycodestyle
-RUN apt-get install cppcheck lcov -y
+# Only for development purposes
+# RUN apt-get install -y \
+#     python3-flake8 \
+#     python3-flake8-builtins \
+#     python3-flake8-comprehensions \
+#     python3-flake8-docstrings \
+#     python3-flake8-import-order \
+#     python3-flake8-quotes
+
+
+# RUN apt-get install -y \
+#     pylint \
+#     flake8 \
+#     pycodestyle \
+#     cppcheck \
+#     lcov
+
 
 # For allowing connection between machines, fastdds has some problem.
-RUN apt-get install ros-jazzy-rmw-cyclonedds-cpp -y
+RUN apt-get update && apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
 
 # Gazebo (Harmonic)
-RUN sudo apt-get install ros-jazzy-ros-gz
+RUN apt-get install -y ros-jazzy-ros-gz
 
 ## Turtlebot2
 RUN apt install ros-jazzy-kobuki-velocity-smoother ros-jazzy-sophus -y

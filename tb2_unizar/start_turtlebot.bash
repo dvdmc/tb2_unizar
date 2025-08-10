@@ -1,64 +1,55 @@
 #!/bin/bash
+set -euo pipefail
+
+# Constants
+readonly DEFAULT_NAMESPACE=""
+readonly DEFAULT_MODE="hokuyo"
+readonly VALID_MODES=("hokuyo" "optitrack" "gazebo" "teleop")
+readonly TMUXINATOR_DIR="tmuxinator"
 
 usage() {
-    echo "  options:"
-    echo "      -n: select drones namespace to launch, values are comma separated. By default, it will get all drones from config file"
-    echo "      -m: select mode (hokuyo, optitrack, gazebo). Default is hokuyo"
+    cat << EOF
+Usage: $(basename "$0") [-n namespace] [-m mode]
+
+Options:
+    -n  Turtlebot namespace (default: ${DEFAULT_NAMESPACE})
+    -m  Operation mode: ${VALID_MODES[*]} (default: ${DEFAULT_MODE})
+    -h  Show this help message
+EOF
 }
 
-# Initialize variables with default values
-tb2_namespace_comma=""
-mode="hokuyo"  # Default mode
+# Parse command line arguments
+namespace="${DEFAULT_NAMESPACE}"
+mode="${DEFAULT_MODE}"
 
-# Arg parser
-while getopts "n:m:" opt; do
-  case ${opt} in
-    n )
-      tb2_namespace_comma="${OPTARG}"
-      ;;
-    m )
-      if [[ "${OPTARG}" =~ ^(hokuyo|optitrack|gazebo|teleop)$ ]]; then
-        mode="${OPTARG}"
-      else
-        echo "Invalid mode: ${OPTARG}. Valid options are: hokuyo, optitrack, gazebo" >&2
-        exit 1
-      fi
-      ;;
-    \? )
-      echo "Invalid option: -$OPTARG" >&2
-      usage
-      exit 1
-      ;;
-    : )
-      echo "Option -$OPTARG requires an argument" >&2
-      usage
-      exit 1
-      ;;
-  esac
+while getopts "n:m:h" opt; do
+    case ${opt} in
+        n) namespace="${OPTARG}" ;;
+        m) 
+            if [[ " ${VALID_MODES[*]} " =~ " ${OPTARG} " ]]; then
+                mode="${OPTARG}"
+            else
+                echo "Error: Invalid mode '${OPTARG}'" >&2
+                echo "Valid modes are: ${VALID_MODES[*]}" >&2
+                exit 1
+            fi
+            ;;
+        h) usage; exit 0 ;;
+        *) usage >&2; exit 1 ;;
+    esac
 done
 
-# If no drone namespaces are provided, use just tb2_unizar
-if [ -z "$tb2_namespace_comma" ]; then
-  tb2_namespace_comma="tb2_unizar"
+# Validate tmuxinator config exists
+config_file="${TMUXINATOR_DIR}/launch_turtlebot_${mode}.yaml"
+if [[ ! -f "${config_file}" ]]; then
+    echo "Error: Configuration file '${config_file}' not found!" >&2
+    exit 1
 fi
-IFS=',' read -r -a tb2_namespaces <<< "$tb2_namespace_comma"
 
-# Set the tmuxinator YAML file based on the selected mode
-tmuxinator_yaml="tmuxinator/launch_turtlebot_${mode}.yaml"
+# Launch turtlebot
+echo "Launching turtlebot with namespace: ${namespace}"
+tmuxinator start -n "${namespace}" -p "${config_file}" "tb_namespace=${namespace}" wait
+sleep 0.1
 
-# Launch tb2 for each drone namespace
-for namespace in ${tb2_namespaces[@]}; do
-  base_launch="false"
-  if [[ ${namespace} == ${tb2_namespaces[0]} ]]; then
-    base_launch="true"
-  fi
-  eval "tmuxinator start -n ${namespace} -p ${tmuxinator_yaml} \
-    tb_namespace=${namespace} \
-    wait"
-
-  sleep 0.1 # Wait for tmuxinator to finish
-
-done
-
-# Attach to tmux session
-tmux attach-session -t ${tb2_namespaces[0]}
+# Attach to the tmux session
+tmux attach-session -t "${namespace}"

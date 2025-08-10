@@ -17,12 +17,12 @@ windows:
   - kobuki:
       layout:
       panes:
-        - ros2 launch tb2_unizar kobuki_node.launch.py
-        - ros2 launch tb2_unizar kobuki_description_unizar.launch.py urdf_file:=urdf/turtlebot_unizar_hokuyo_top.urdf.xacro use_sim_time:=false use_namespace:=false
+        - ros2 launch tb2_unizar kobuki_node.launch.py params_file:=config/hokuyo/kobuki_params.yaml use_sim_time:=false namespace:=<%= tb_namespace %>
+        - ros2 launch tb2_unizar kobuki_description_unizar.launch.py urdf_file:=urdf/turtlebot_unizar_hokuyo_top.urdf.xacro use_sim_time:=false namespace:=<%= tb_namespace %>
   - navigation:
       layout:
       panes:
-        - sleep 3 && ros2 launch nav2_bringup bringup_launch.py use_localization:=True use_namespace:=False use_composite:=False map:=maps/i3aApril2025.yaml params_file:=config/hokuyo/nav2_params.yaml
+        - sleep 3 && ros2 launch nav2_bringup bringup_launch.py use_localization:=True namespace:=<%= tb_namespace %> use_composite:=False map:=maps/i3aApril2025.yaml params_file:=config/hokuyo/nav2_params.yaml
   
   # Sensors
   - sensors:
