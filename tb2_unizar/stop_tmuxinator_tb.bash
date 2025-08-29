@@ -1,53 +1,56 @@
 #!/bin/bash
+set -euo pipefail
 
-# Get the directory of the current script
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+# Constants
+readonly DEFAULT_NAMESPACE="tb2_unizar"
 
-# Get turtlebot namespaces from command-line argument
-turtlebots_namespace_comma=$1
-IFS=',' read -r -a turtlebot_namespaces <<< "$turtlebots_namespace_comma"
+usage() {
+    cat << EOF
+Usage: $(basename "$0") [namespace]
 
-# If namespaces is empty, assume turtlebot1
-if [ -z "$turtlebots_namespace_comma" ]; then
-  turtlebot_namespaces=("turtlebot1")
-fi
+Arguments:
+    namespace  Turtlebot namespace to stop (default: ${DEFAULT_NAMESPACE})
+EOF
+}
 
-# Make a tmux list of sessions to be killed
-tmux_session_list=()
-
-# Add turtlebots from user input
-for namespace in ${turtlebot_namespaces[@]}; do
-  tmux_session_list+=("$namespace")
-done
+# Get namespace from argument or use default
+namespace="${1:-${DEFAULT_NAMESPACE}}"
 
 # If inside tmux session, get the current session name
-if [[ -n "$TMUX" ]]; then
-  current_session=$(tmux display-message -p '#S')
+current_session=""
+if [[ -n "${TMUX:-}" ]]; then
+    current_session=$(tmux display-message -p '#S')
 fi
 
-# Send Ctrl+C signal to each window of each session
-for session in ${tmux_session_list[@]}; do
-  # Check if session exists
-  if tmux has-session -t "$session" 2>/dev/null; then
-    # Get the list of windows in the session
-    windows=($(tmux list-windows -t "$session" -F "#{window_index}"))
-    # Iterate through each window and send Ctrl+C
-    for window in "${windows[@]}"; do
-      # Send Ctrl+C to the window
-      tmux send-keys -t "$session:$window" C-c
-      sleep 0.1 # Add a small delay to allow the signal to be processed
-    done
-  fi
-done
+# Function to gracefully stop a tmux session
+stop_session() {
+    local session="$1"
+    
+    # Check if session exists
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        echo "No active session found for namespace: $session"
+        return 0
+    fi
 
-# Kill all tmux sessions from the list except for the current one
-for session in ${tmux_session_list[@]}; do
-  if [[ "$session" != "$current_session" ]]; then
-    tmux kill-session -t "$session" 2>/dev/null
-  fi
-done
+    echo "Stopping session: $session"
+    
+    # Send Ctrl+C to all windows in the session
+    while read -r window_index; do
+        tmux send-keys -t "${session}:${window_index}" C-c
+        sleep 0.1
+    done < <(tmux list-windows -t "$session" -F "#{window_index}")
 
-# Kill the current tmux session, if in a tmux session
-if [[ -n "$TMUX" ]]; then
-  tmux kill-session -t "$current_session" 2>/dev/null
+    # Kill the session if it's not the current one
+    if [[ "$session" != "$current_session" ]]; then
+        tmux kill-session -t "$session" 2>/dev/null || true
+    fi
+}
+
+# Stop the specified session
+stop_session "$namespace"
+
+# If we're in a tmux session and it's the one we just stopped, kill it
+if [[ -n "$current_session" && "$current_session" == "$namespace" ]]; then
+    sleep 0.5  # Give processes time to clean up
+    tmux kill-session -t "$current_session" 2>/dev/null || true
 fi

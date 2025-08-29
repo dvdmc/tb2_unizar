@@ -59,7 +59,7 @@
    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> static_tf_broadcaster_;
  
    bool has_earth_to_map_ = false;
-   std::string mocap_topic_;
+   std::string mocap_topic_ = "/rigid_bodies";
    std::string rigid_body_name_;
    std::string earth_frame_;
    std::string map_frame_;
@@ -79,7 +79,6 @@
        tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(*this);
        static_tf_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(*this);
  
-     this->declare_parameter<std::string>("mocap_topic", "rigid_bodies");
      this->declare_parameter<std::string>("rigid_body_name", "2");
      this->declare_parameter<double>("orientation_smooth_filter", 1.0);
      this->declare_parameter<std::string>("earth_frame", "earth");
@@ -87,13 +86,7 @@
      this->declare_parameter<std::string>("odom_frame", "odom");
      this->declare_parameter<std::string>("base_frame", "base_footprint");
      this->declare_parameter<std::string>("rigid_body_frame", "base_mocap");
-     ;
- 
-     this->get_parameter("mocap_topic", mocap_topic_);
-     if (mocap_topic_.empty()) {
-       RCLCPP_ERROR(this->get_logger(), "Mocap topic is empty");
-       rclcpp::shutdown();
-     }
+
      this->get_parameter("rigid_body_name", rigid_body_name_);
      if (rigid_body_name_.empty()) {
        RCLCPP_ERROR(this->get_logger(), "Rigid body name is empty");
