@@ -44,6 +44,11 @@ def generate_launch_description():
     # Locate description
     robot_description = Command(["xacro ", LaunchConfiguration("urdf_file")])
 
+    remappings=[
+        ('/tf', 'tf'),
+        ('/tf_static', 'tf_static'),
+    ]
+
     # Create the robot state publisher node
     start_robot_state_publisher_cmd = Node(
         package="robot_state_publisher",
@@ -54,7 +59,8 @@ def generate_launch_description():
         parameters=[{
             "use_sim_time": LaunchConfiguration("use_sim_time"),
             "robot_description": ParameterValue(robot_description, value_type=str)
-        }]
+        }],
+        remappings=remappings
     )
 
     return LaunchDescription(

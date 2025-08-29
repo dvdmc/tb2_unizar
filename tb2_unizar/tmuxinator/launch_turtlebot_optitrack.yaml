@@ -33,11 +33,12 @@ windows:
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py namespace:=mocap config_file:=config/optitrack/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
         # NOTE: The rigid body name is the ID, not the label or name assigned to the rigid body in the OptiTrack software.
-        - sleep 2; ros2 run tb2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:=4 -p frame_id:=<%= tb_namespace %>/odom -p child_frame_id:=<%= tb_namespace %>/base_footprint -p rigid_body_frame:=<%= tb_namespace %>/base_mocap
+        - sleep 2; ros2 run tb2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:=2 -p frame_id:=<%= tb_namespace %>/odom -p child_frame_id:=<%= tb_namespace %>/base_footprint -p rigid_body_frame:=<%= tb_namespace %>/base_mocap
 
   - static_transforms:
       layout:
       panes:
         # The map/earth transform is required for AS2 in the ground station
         # - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id /map --frame-id /earth
-        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id <%= tb_namespace %>/odom --frame-id /map
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id <%= tb_namespace %>/odom --frame-id <%= tb_namespace %>/map
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id <%= tb_namespace %>/map --frame-id /earth
