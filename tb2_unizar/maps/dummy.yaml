@@ -1,4 +1,4 @@
-image: test.png
+image: dummy.png
 mode: trinary
 resolution: 0.1
 origin: [-150.0, -150.0, 0.0]

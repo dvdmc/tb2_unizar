@@ -105,13 +105,14 @@ The `tb2_unizar` package included in this repository is structured as follows:
 
 ## Steps for Hokuyo / Realsense run
 
-Explain config sensors and preliminary checks. Map recording and navigation.
+WIP: Explain config sensors and preliminary checks. Map recording and navigation.
 
 - Configure correctly the `scan` topic on the `Hokuyo` and `Nav2` config files.
 
 ## Steps for Optitrack
 
-Configure the Optitrack computer IP and the robot local IP on `config/optitrack/mocap4r2_optitrack.yaml`.
+For running this TB2 with Optitrack, you need the [optitrack_pose_broadcaster](https://github.com/dvdmc/optitrack_pose_broadcaster) package and
+configure the Optitrack computer IP and the robot local IP on `config/optitrack/mocap4r2_optitrack.yaml`.
 
 ### Specific params
 

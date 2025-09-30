@@ -33,7 +33,7 @@ windows:
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py namespace:=mocap config_file:=config/optitrack/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
         # The mocap4r2_optitrack_driver will publish 
-        - sleep 2; ros2 run tb2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:=4
+        - sleep 2; ros2 run optitrack_pose_broadcaster gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:=4
   - static_transforms:
       layout:
       panes:
