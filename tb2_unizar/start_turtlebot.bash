@@ -22,9 +22,8 @@ EOF
 namespace="${DEFAULT_NAMESPACE}"
 mode="${DEFAULT_MODE}"
 
-while getopts "n:m:h" opt; do
+while getopts "m:h" opt; do
     case ${opt} in
-        n) namespace="${OPTARG}" ;;
         m) 
             if [[ " ${VALID_MODES[*]} " =~ " ${OPTARG} " ]]; then
                 mode="${OPTARG}"
@@ -47,8 +46,7 @@ if [[ ! -f "${config_file}" ]]; then
 fi
 
 # Launch turtlebot
-echo "Launching turtlebot with namespace: ${namespace}"
-tmuxinator start -n "${namespace}" -p "${config_file}" "tb_namespace=${namespace}" wait
+tmuxinator start -p "${config_file}" wait
 sleep 0.1
 
 # Attach to the tmux session

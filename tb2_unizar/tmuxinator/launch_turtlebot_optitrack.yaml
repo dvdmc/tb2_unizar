@@ -1,8 +1,4 @@
-<%
-# Input parameters
-tb_namespace           = @settings["tb_namespace"]
-%>
-name: <%= tb_namespace %>
+name: tb2
 attach: false
 root: ./
 startup_window: mission_monitoring
@@ -22,7 +18,7 @@ windows:
   - navigation:
       layout:
       panes:
-        - ros2 launch nav2_bringup bringup_launch.py use_localization:=False use_namespace:=False use_composite:=False map:=maps/dummy.yaml params_file:=config/optitrack/nav2_params.yaml
+        - ros2 launch nav2_bringup bringup_launch.py use_localization:=False use_namespace:=False use_composition:=False map:=maps/dummy.yaml params_file:=config/optitrack/nav2_params.yaml
         # Map server is not run when not using localization expecting slam to be active. Thus, we need to run a dummy map:
         - ros2 launch tb2_unizar nav2_map_server.launch.py map:=maps/dummy.yaml use_sim_time:=false use_namespace:=false params_file:=config/optitrack/nav2_params.yaml
   # Pose
