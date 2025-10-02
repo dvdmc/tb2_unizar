@@ -12,4 +12,8 @@
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>optitrack_pose_broadcaster</exec_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
 </package>
