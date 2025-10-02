@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Constants
-readonly DEFAULT_NAMESPACE="tb2_unizar"
+readonly DEFAULT_NAMESPACE="tb2"
 
 usage() {
     cat << EOF
