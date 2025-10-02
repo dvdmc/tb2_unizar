@@ -1,8 +1,4 @@
-<%
-# Input parameters
-tb_namespace           = @settings["tb_namespace"]
-%>
-name: <%= tb_namespace %>
+name: tb2_ground_station
 attach: false
 root: ./
 startup_window: mission_monitoring
