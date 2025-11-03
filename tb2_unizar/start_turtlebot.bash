@@ -4,7 +4,7 @@ set -euo pipefail
 # Constants
 readonly DEFAULT_NAMESPACE=""
 readonly DEFAULT_MODE="hokuyo"
-readonly VALID_MODES=("hokuyo" "optitrack" "gazebo" "teleop")
+readonly VALID_MODES=("hokuyo" "hokuyo_mapping" "optitrack" "gazebo" "teleop")
 readonly TMUXINATOR_DIR="tmuxinator"
 
 usage() {
