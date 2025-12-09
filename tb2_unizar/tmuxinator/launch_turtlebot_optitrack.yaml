@@ -31,5 +31,5 @@ windows:
   - static_transform:
       layout:
       panes:
-        - ros2 run tf2_ros static_transform_publisher 0 0.2 0 0 0 0 earth map
+        - ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 earth map
         - ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom
