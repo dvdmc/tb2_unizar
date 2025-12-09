@@ -27,3 +27,9 @@ windows:
       panes:
         # The mocap4r2_optitrack_driver will publish from the ground station
         - sleep 2; ros2 run optitrack_pose_broadcaster gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:='"7"'
+
+  - static_transform:
+      layout:
+      panes:
+        - ros2 run tf2_ros static_transform_publisher 0 0.2 0 0 0 0 earth map
+        - ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom
