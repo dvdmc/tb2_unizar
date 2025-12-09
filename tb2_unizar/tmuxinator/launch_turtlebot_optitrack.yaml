@@ -25,5 +25,5 @@ windows:
   - pose:
       layout:
       panes:
-        # The mocap4r2_optitrack_driver will publish 
+        # The mocap4r2_optitrack_driver will publish from the ground station
         - sleep 2; ros2 run optitrack_pose_broadcaster gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies -p rigid_body_name:='"7"'
